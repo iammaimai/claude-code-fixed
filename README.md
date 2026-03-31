@@ -14,6 +14,10 @@
 - 编译手册：[docs/BUILD_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/BUILD_MANUAL.md)
 - 二次开发手册：[docs/SECONDARY_DEVELOPMENT_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/SECONDARY_DEVELOPMENT_MANUAL.md)
 
+友链：
+
+- https://linux.do/
+
 ## 快速开始
 
 ```bash
