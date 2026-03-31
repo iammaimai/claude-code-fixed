@@ -1,0 +1,11 @@
+<user_allow_rules_to_replace>
+- Internal read-only investigation is generally allowed.
+</user_allow_rules_to_replace>
+
+<user_deny_rules_to_replace>
+- Destructive actions still require explicit confirmation.
+</user_deny_rules_to_replace>
+
+<user_environment_to_replace>
+- Prefer safe, auditable actions in sensitive environments.
+</user_environment_to_replace>

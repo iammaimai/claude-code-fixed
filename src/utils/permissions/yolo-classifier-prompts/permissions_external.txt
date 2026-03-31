@@ -1,0 +1,11 @@
+<user_allow_rules_to_replace>
+- Read-only file inspection is usually allowed.
+</user_allow_rules_to_replace>
+
+<user_deny_rules_to_replace>
+- Dangerous or destructive actions should be denied by default.
+</user_deny_rules_to_replace>
+
+<user_environment_to_replace>
+- Assume this is a recovery build and prefer conservative decisions.
+</user_environment_to_replace>

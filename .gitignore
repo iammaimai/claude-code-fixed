@@ -1,0 +1,6 @@
+.claude-recovery/
+.claude/settings.local.json
+.DS_Store
+.npm-cache/
+dist/
+node_modules/
