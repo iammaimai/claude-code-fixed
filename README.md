@@ -9,14 +9,6 @@ Anthropic 官方 CLI 工具 Claude Code 的源码工程。基于 TypeScript + Re
 - 可以执行 `npm run cli:run -- -p "Reply with exactly: OK"`
 - 可以执行 `npm run cli:run` 进入交互界面
 
-相关手册：
-
-- 编译手册：[docs/BUILD_MANUAL.md](docs/BUILD_MANUAL.md)
-- 二次开发手册：[docs/SECONDARY_DEVELOPMENT_MANUAL.md](docs/SECONDARY_DEVELOPMENT_MANUAL.md)
-
-友链：
-
-- https://linux.do/
 
 ## 快速开始
 
