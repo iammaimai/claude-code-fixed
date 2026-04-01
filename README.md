@@ -1,6 +1,6 @@
-# Claude Code 2.1.88 恢复工程说明
+# Claude Code
 
-本仓库是基于已发布包中的 `cli.js` 与 `cli.js.map` 反推恢复出来的 Claude Code 源码树。当前目标不是“完全还原官方开发仓库历史”，而是提供一个可以继续编译、启动、调试、补模块和二次开发的可维护工程。
+Anthropic 官方 CLI 工具 Claude Code 的源码工程。基于 TypeScript + React/Ink 构建，通过 esbuild 打包。
 
 当前验证状态：
 
@@ -9,14 +9,6 @@
 - 可以执行 `npm run cli:run -- -p "Reply with exactly: OK"`
 - 可以执行 `npm run cli:run` 进入交互界面
 
-相关手册：
-
-- 编译手册：[docs/BUILD_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/BUILD_MANUAL.md)
-- 二次开发手册：[docs/SECONDARY_DEVELOPMENT_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/SECONDARY_DEVELOPMENT_MANUAL.md)
-
-友链：
-
-- https://linux.do/
 
 ## 快速开始
 
@@ -27,7 +19,7 @@ npm run cli:status
 npm run cli:run
 ```
 
-如果你希望运行时继承全局 `~/.claude/settings.json` 中的代理和认证环境，直接使用上面的 `npm run cli:run` 即可。  
+如果你希望运行时继承全局 `~/.claude/settings.json` 中的代理和认证环境，直接使用上面的 `npm run cli:run` 即可。
 如果你希望用项目内隔离配置启动，可以使用：
 
 ```bash
@@ -43,14 +35,11 @@ CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1 npm run cli:run
 | `package.json` | 包元数据、依赖和常用脚本入口。 |
 | `package-lock.json` | 依赖锁文件。 |
 | `tsconfig.json` | TypeScript 检查配置，本项目主要依赖 esbuild 打包，不直接用 `tsc` 产物。 |
-| `scripts/` | 构建、缺失模块审计、恢复启动器和若干 shim。 |
-| `src/` | 恢复后的主源码目录。 |
+| `scripts/` | 构建、缺失模块审计、启动器和若干 shim。 |
+| `src/` | 主源码目录。 |
 | `dist/` | esbuild 产物目录，包含 `cli.js` 与 `cli.js.map`。 |
 | `types/` | 顶层类型补丁与声明文件。 |
 | `vendor/` | 第三方或外部搬运代码。 |
-| `.claude-recovery/` | 项目级运行配置与会话数据目录。 |
-| `.npm-cache/` | 当前工程本地 npm 缓存目录。 |
-| `image-processor.node` | 恢复阶段保留的原生模块占位文件。 |
 
 ### scripts 模块
 
@@ -58,7 +47,7 @@ CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1 npm run cli:run
 | --- | --- |
 | `scripts/build.mjs` | esbuild 打包脚本，负责宏替换、缺失模块回退、文本资源 loader、原生模块 TS 替代映射。 |
 | `scripts/audit-missing.mjs` | 缺失源码/文本/type-only 模块审计工具。 |
-| `scripts/run-recovered-cli.mjs` | 恢复版 CLI 启动器，负责项目级配置目录和全局环境继承/隔离。 |
+| `scripts/run-recovered-cli.mjs` | CLI 启动器，负责项目级配置目录和全局环境继承/隔离。 |
 | `scripts/shims/empty-module.js` | 空模块 shim，用于无内容依赖的兜底。 |
 | `scripts/shims/missing-module.cjs` | 缺失运行时代码时的通用降级模块。 |
 | `scripts/shims/missing-text.cjs` | 缺失文本资源时的通用降级模块。 |
@@ -115,12 +104,6 @@ CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1 npm run cli:run
 | `src/migrations` | 兼容旧配置、旧模型和旧行为的迁移脚本。 |
 
 ## 模块清单
-
-说明：
-
-- 本清单按“目录模块”统计，覆盖 `src/` 下一级和二级目录。
-- 二级模块以职责为主描述，便于后续恢复与维护。
-- 名称明显为实验、内部或特性开关模块的目录，会按名称和当前调用链给出职责说明。
 
 ### src 一级模块
 
@@ -452,32 +435,30 @@ CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1 npm run cli:run
 | `src/skills/bundled` | 内置技能集合。 |
 | `src/types/generated` | 生成的类型定义。 |
 
-## 恢复工程的实现特点
+## 构建说明
 
-### 1. 构建不是官方原始构建链，而是恢复构建链
+当前工程使用 [scripts/build.mjs](scripts/build.mjs) 通过 esbuild 打包：
 
-当前工程使用 [scripts/build.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/build.mjs) 通过 esbuild 重新打包，核心目标是：
-
-- 让恢复源码可以重新产出 `dist/cli.js`
+- 产出 `dist/cli.js`
 - 对缺失文本资源和缺失模块提供统一降级
 - 对部分 Bun/原生模块提供 shim 或 TS 替代实现
 
-### 2. 运行器支持“继承全局环境”和“完全隔离”
+### 运行器
 
-[scripts/run-recovered-cli.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/run-recovered-cli.mjs) 默认会：
+[scripts/run-recovered-cli.mjs](scripts/run-recovered-cli.mjs) 默认会：
 
 - 把会话数据写到项目内 `.claude-recovery/`
 - 继承 `~/.claude/settings.json` 中的 `env` 配置
 
 当设置 `CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1` 时，运行器会跳过全局 `env` 注入，方便测试完全隔离环境。
 
-### 3. 原生模块已有部分 TS 回退实现
+### 原生模块 TS 替代
 
-当前恢复工程已经接入的代表性回退有：
+部分原生模块已有 TypeScript 回退实现：
 
-- `color-diff-napi` -> `src/native-ts/color-diff`
-- 缺失文本资源 -> `scripts/shims/missing-text.cjs`
-- 缺失代码模块 -> `scripts/shims/missing-module.cjs`
+- `color-diff-napi` → `src/native-ts/color-diff`
+- 缺失文本资源 → `scripts/shims/missing-text.cjs`
+- 缺失代码模块 → `scripts/shims/missing-module.cjs`
 
 ## 常用命令
 
@@ -490,7 +471,79 @@ npm run cli:run -- -p "Reply with exactly: OK"
 CLAUDE_RECOVERY_SKIP_GLOBAL_ENV=1 npm run cli:run
 ```
 
+## 二次开发
+
+详细指南见 [docs/SECONDARY_DEVELOPMENT_MANUAL.md](docs/SECONDARY_DEVELOPMENT_MANUAL.md)，这里列关键步骤。
+
+### 环境准备
+
+```bash
+git clone <本仓库地址>
+cd claude-code-fixed
+npm install
+npm_config_cache=.npm-cache npm run build
+```
+
+### 开发循环
+
+改代码前先跑基线验证，改完再跑一遍，确保没搞坏：
+
+```bash
+# 基线检查
+npm run audit:missing
+npm run cli:run -- -p "Reply with exactly: OK"
+
+# 改代码...
+
+# 回归验证
+npm_config_cache=.npm-cache npm run build
+npm run audit:missing
+npm run cli:run -- -p "Reply with exactly: OK"
+npm run cli:run  # 如果动了 UI 相关代码
+```
+
+### 加新命令
+
+1. `src/commands/<name>/` 下建目录
+2. 在 `src/commands.ts` 注册
+3. `npm run cli:run -- --help` 确认注册成功
+
+### 加新工具
+
+1. `src/tools/<ToolName>/` 下建目录
+2. 定义输入 schema、输出格式、失败行为
+3. 工具未启用时不能影响工具列表装载
+
+### 补缺失模块
+
+用 `npm run audit:missing` 定位缺口，按类型处理：
+
+| 缺口类型 | 处理方式 |
+| --- | --- |
+| 运行时代码 | 找调用点，实现最小可运行版本，缺失时降级而非崩溃 |
+| 文本资源 | 补文件，确认 `scripts/build.mjs` 能打进包 |
+| 原生模块 | 优先找 TS 替代实现（参考 `src/native-ts/`），其次加 shim |
+
+### 自定义 API 端点
+
+在 `~/.claude/settings.json` 的 `env` 里配 `ANTHROPIC_BASE_URL` 即可把请求转到你自己的代理或兼容接口：
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://your-proxy.example.com"
+  }
+}
+```
+
+### 提交前自查
+
+- `npm run build` 通过
+- `npm run audit:missing` 没出现新的运行时缺口
+- `npm run cli:run -- -p "Reply with exactly: OK"` 正常返回
+- `npm run cli:run` 交互模式不崩
+
 ## 文档索引
 
-- [docs/BUILD_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/BUILD_MANUAL.md)
-- [docs/SECONDARY_DEVELOPMENT_MANUAL.md](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/docs/SECONDARY_DEVELOPMENT_MANUAL.md)
+- [docs/BUILD_MANUAL.md](docs/BUILD_MANUAL.md)
+- [docs/SECONDARY_DEVELOPMENT_MANUAL.md](docs/SECONDARY_DEVELOPMENT_MANUAL.md)

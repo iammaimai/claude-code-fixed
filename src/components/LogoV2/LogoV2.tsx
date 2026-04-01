@@ -326,7 +326,7 @@ export function LogoV2() {
       t18 = $[42];
       t19 = $[43];
     }
-    return <><OffscreenFreeze><Box flexDirection="column" borderStyle="round" borderColor="claude" borderText={t11} paddingX={1} paddingY={1} alignItems="center" width={columns}><Text bold={true}>{welcomeMessage}</Text>{t12}{t13}<Text dimColor={true}>{billingType}</Text><Text dimColor={true}>{agentName ? `@${agentName} · ${truncatedCwd}` : truncatedCwd}</Text></Box></OffscreenFreeze>{t14}{t15}{t16}{t17}{t18}{t19}</>;
+    return <><OffscreenFreeze><Box flexDirection="column" borderStyle="round" borderColor="claude" borderText={t11} paddingX={1} paddingY={1} alignItems="center" width={columns}><WelcomeMessageText username={username} />{t12}{t13}<Text dimColor={true}>{billingType}</Text><Text dimColor={true}>{agentName ? `@${agentName} · ${truncatedCwd}` : truncatedCwd}</Text></Box></OffscreenFreeze>{t14}{t15}{t16}{t17}{t18}{t19}</>;
   }
   const welcomeMessage_0 = formatWelcomeMessage(username);
   const modelLine = !process.env.IS_DEMO && config.oauthAccount?.organizationName ? `${modelDisplayName} · ${billingType} · ${config.oauthAccount.organizationName}` : `${modelDisplayName} · ${billingType}`;
@@ -361,9 +361,9 @@ export function LogoV2() {
   const t16 = 1;
   const t17 = 1;
   let t18;
-  if ($[46] !== welcomeMessage_0) {
-    t18 = <Box marginTop={1}><Text bold={true}>{welcomeMessage_0}</Text></Box>;
-    $[46] = welcomeMessage_0;
+  if ($[46] !== username) {
+    t18 = <Box marginTop={1}><WelcomeMessageText username={username} /></Box>;
+    $[46] = username;
     $[47] = t18;
   } else {
     t18 = $[47];
@@ -524,6 +524,13 @@ export function LogoV2() {
     t41 = $[93];
   }
   return t41;
+}
+function WelcomeMessageText({ username }) {
+  const MAX_USERNAME_LENGTH = 20;
+  if (!username || username.length > MAX_USERNAME_LENGTH) {
+    return <Text bold={true}>Welcome back!</Text>;
+  }
+  return <Text bold={true}>Welcome back <Text color="success">{username}</Text>!</Text>;
 }
 function _temp3(current) {
   if (current.lastReleaseNotesSeen === MACRO.VERSION) {

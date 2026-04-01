@@ -50,9 +50,9 @@ npm run cli:run
 
 ### 启动层
 
-- [src/entrypoints/cli.tsx](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/entrypoints/cli.tsx)
-- [src/main.tsx](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/main.tsx)
-- [src/commands.ts](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/commands.ts)
+- [src/entrypoints/cli.tsx](src/entrypoints/cli.tsx)
+- [src/main.tsx](src/main.tsx)
+- [src/commands.ts](src/commands.ts)
 
 建议：
 
@@ -122,7 +122,7 @@ npm run cli:run
 做法：
 
 1. 先补文件。
-2. 确认 [scripts/build.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/build.mjs) 能把 `.md/.txt` 作为文本打进包。
+2. 确认 [scripts/build.mjs](scripts/build.mjs) 能把 `.md/.txt` 作为文本打进包。
 
 ### 场景 C：缺失的是原生模块
 
@@ -134,13 +134,13 @@ npm run cli:run
 
 当前可参考的现成方案：
 
-- `color-diff-napi` -> [src/native-ts/color-diff/index.ts](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/native-ts/color-diff/index.ts)
+- `color-diff-napi` -> [src/native-ts/color-diff/index.ts](src/native-ts/color-diff/index.ts)
 
 ## 5. 构建脚本维护建议
 
 关键文件：
 
-- [scripts/build.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/build.mjs)
+- [scripts/build.mjs](scripts/build.mjs)
 
 建议关注点：
 
@@ -159,7 +159,7 @@ npm run cli:run
 
 关键文件：
 
-- [scripts/run-recovered-cli.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/run-recovered-cli.mjs)
+- [scripts/run-recovered-cli.mjs](scripts/run-recovered-cli.mjs)
 
 当前策略：
 
@@ -177,7 +177,7 @@ npm run cli:run
 步骤：
 
 1. 在 `src/commands/<name>/` 下新增命令目录或文件。
-2. 在 [src/commands.ts](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/commands.ts) 注册。
+2. 在 [src/commands.ts](src/commands.ts) 注册。
 3. 跑 `npm run cli:run -- --help` 确认注册成功。
 4. 跑命令本身的最小验证。
 
