@@ -50,8 +50,8 @@ npm_config_cache=.npm-cache npm run build
 
 脚本入口：
 
-- [package.json](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/package.json)
-- [scripts/build.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/build.mjs)
+- [package.json](package.json)
+- [scripts/build.mjs](scripts/build.mjs)
 
 ### 构建产物
 
@@ -162,7 +162,7 @@ npm run audit:missing
 
 入口脚本：
 
-- [scripts/audit-missing.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/audit-missing.mjs)
+- [scripts/audit-missing.mjs](scripts/audit-missing.mjs)
 
 建议解读方式：
 
@@ -179,7 +179,7 @@ npm run audit:missing
 
 现状：
 
-- 已在 [src/utils/theme.ts](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/utils/theme.ts) 修复为兼容写法。
+- 已在 [src/utils/theme.ts](src/utils/theme.ts) 修复为兼容写法。
 
 ### 8.2 交互界面启动时报 `getSyntaxTheme is not a function`
 
@@ -189,7 +189,7 @@ npm run audit:missing
 
 现状：
 
-- 已在 [scripts/build.mjs](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/scripts/build.mjs) 将它映射到 [src/native-ts/color-diff/index.ts](/Users/test/Downloads/claude-code/package/claude-code-2.1.88/src/native-ts/color-diff/index.ts)。
+- 已在 [scripts/build.mjs](scripts/build.mjs) 将它映射到 [src/native-ts/color-diff/index.ts](src/native-ts/color-diff/index.ts)。
 
 ### 8.3 `npm` 报缓存目录权限错误
 
